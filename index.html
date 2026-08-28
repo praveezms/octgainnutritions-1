@@ -173,53 +173,6 @@
         </header>
 
 
-        <style>
-            /* Active menu item while scrolling */
-.main-menu nav ul li a {
-    transition: color 0.3s ease;
-}
-
-.main-menu nav ul li.active > a {
-    color: #ff6b00 !important;
-}
-        </style>
-
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const sections = document.querySelectorAll("#home, #about, #machine, #contact");
-    const menuLinks = document.querySelectorAll("#mobile-menu ul li a");
-
-    function updateActiveMenu() {
-        let currentSection = "";
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-
-            if (window.scrollY >= sectionTop - 200) {
-                currentSection = section.getAttribute("id");
-            }
-        });
-
-        menuLinks.forEach(link => {
-            link.parentElement.classList.remove("active");
-
-            if (link.getAttribute("href") === "#" + currentSection) {
-                link.parentElement.classList.add("active");
-            }
-        });
-    }
-
-    window.addEventListener("scroll", updateActiveMenu);
-
-    updateActiveMenu();
-});
-</script>
-
-        
 
 
         <div id="smooth-wrapper">
@@ -487,6 +440,132 @@ KOZHIKODE,KERALA-673655 </li>
     <!--<< Main.js >>-->
     <script src="js/main.js"></script>
     <script type="module" src="js/distortion-img.js"></script>
+
+    ```html
+<style>
+/* =========================================
+   MENU ACTIVE COLOR
+========================================= */
+
+.main-menu nav ul li a {
+    transition: color 0.3s ease;
+}
+
+/* Active menu item */
+.main-menu nav ul li.active > a {
+    color: #ed2d24 !important;
+}
+
+
+/* =========================================
+   SMOOTH SCROLL
+========================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+</style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuLinks = document.querySelectorAll(
+        '#mobile-menu ul li a[href^="#"]'
+    );
+
+    const sections = document.querySelectorAll(
+        "#index, #aboutus, #machine, #contact"
+    );
+
+
+    /* =========================================
+       CLICK MENU → SMOOTH SCROLL
+    ========================================= */
+
+    menuLinks.forEach(function (link) {
+
+        link.addEventListener("click", function (e) {
+
+            const targetId = this.getAttribute("href");
+            const target = document.querySelector(targetId);
+
+            if (!target) return;
+
+            e.preventDefault();
+
+            const header = document.querySelector("#header-sticky");
+            const headerHeight = header ? header.offsetHeight : 0;
+
+            const targetPosition =
+                target.getBoundingClientRect().top +
+                window.pageYOffset -
+                headerHeight;
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: "smooth"
+            });
+        });
+
+    });
+
+
+    /* =========================================
+       SCROLL → CHANGE ACTIVE MENU COLOR
+    ========================================= */
+
+    function updateActiveMenu() {
+
+        let currentSection = "";
+
+        const scrollPosition =
+            window.pageYOffset + window.innerHeight * 0.35;
+
+
+        sections.forEach(function (section) {
+
+            const sectionTop = section.offsetTop;
+            const sectionBottom =
+                sectionTop + section.offsetHeight;
+
+            if (
+                scrollPosition >= sectionTop &&
+                scrollPosition < sectionBottom
+            ) {
+                currentSection = section.id;
+            }
+
+        });
+
+
+        menuLinks.forEach(function (link) {
+
+            link.parentElement.classList.remove("active");
+
+            if (
+                link.getAttribute("href") ===
+                "#" + currentSection
+            ) {
+                link.parentElement.classList.add("active");
+            }
+
+        });
+
+    }
+
+
+    window.addEventListener("scroll", updateActiveMenu);
+
+    window.addEventListener("resize", updateActiveMenu);
+
+    /* Set Home active when page loads */
+    updateActiveMenu();
+
+});
+</script>
+```
+
 </body>
 
 </html>
