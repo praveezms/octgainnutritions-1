@@ -132,21 +132,29 @@
                             <div class="main-menu">
                                 <nav id="mobile-menu">
                                     <ul>
-                                        <li>
-                                            <a href="#index"> Home</a>
-                                        </li>
+                                      
 
-                                        <li>
-                                            <a href="#aboutus"> About us</a>
-                                        </li>
+                                            <li>
+        <a href="#index">Home</a>
+    </li>
 
-                                        <li>
-                                            <a href="#"> Machine</a>
-                                        </li>
+    <li>
+        <a href="#aboutus">About us</a>
+    </li>
 
-                                        <li>
-                                            <a href="#">Contact Us</a>
-                                        </li>
+    <li>
+        <a href="#machine">Machine</a>
+    </li>
+
+    <li>
+        <a href="#contact">Contact Us</a>
+    </li>
+
+
+
+
+
+                                        
                                     </ul>
                                 </nav>
                             </div>
@@ -164,6 +172,54 @@
             </div>
         </header>
 
+
+        <style>
+            /* Active menu item while scrolling */
+.main-menu nav ul li a {
+    transition: color 0.3s ease;
+}
+
+.main-menu nav ul li.active > a {
+    color: #ff6b00 !important;
+}
+        </style>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const sections = document.querySelectorAll("#home, #about, #machine, #contact");
+    const menuLinks = document.querySelectorAll("#mobile-menu ul li a");
+
+    function updateActiveMenu() {
+        let currentSection = "";
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+
+            if (window.scrollY >= sectionTop - 200) {
+                currentSection = section.getAttribute("id");
+            }
+        });
+
+        menuLinks.forEach(link => {
+            link.parentElement.classList.remove("active");
+
+            if (link.getAttribute("href") === "#" + currentSection) {
+                link.parentElement.classList.add("active");
+            }
+        });
+    }
+
+    window.addEventListener("scroll", updateActiveMenu);
+
+    updateActiveMenu();
+});
+</script>
+
+        
 
 
         <div id="smooth-wrapper">
